@@ -1,34 +1,42 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/create-next-app).
+This code is more or less the code of the auth v5 tutorial on youtube: see
+https://www.youtube.com/watch?v=1MTyCvS05V4
 
-## Getting Started
+```
+setenv APPNAME auth-guide
+npx create-next-app@rc --typescript --eslint --app --src-dir --turbo --tailwind --no-import-alias --empty ${APPNAME} ${APPNAME}
+cd ${APPNAME}
+npx shadcn-ui@latest init
+npm install -D --legacy-peer-deps tailwindcss-animate \
+	class-variance-authority clsx tailwind-merge @radix-ui/react-icons \
+	@radix-ui/react-slot
+npx shadcn-ui add button
+	# check: components/ui/
+npx shadcn-ui add card
 
-First, run the development server:
+npm i -D --legacy-peer-deps react-icons
+VSCode: omkarbhede.react-icons-auto-import
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+npm install --legacy-peer-deps @radix-ui/react-label \
+	@hookform/resolvers zod react-hook-form
+npx shadcn-ui add form
+npx shadcn-ui add input
+
+npm i -D --legacy-peer-deps prisma
+npm i --legacy-peer-deps @prisma/client
+npx prisma init
+npx prisma generate
+npx prisma db push
+
+npm i --legacy-peer-deps @auth/prisma-adapter
+npm i --legacy-peer-deps bcryptjs
+npm i -D --legacy-peer-deps @types/bcryptjs
+npm i --legacy-peer-deps next-auth@beta
+
+npm i --legacy-peer-deps uuid
+npm i -D --legacy-peer-deps @types/uuid
+# email @gmail for free
+npm install --legacy-peer-deps resend
+npm install --legacy-peer-deps react-spinners
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
-
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Current status: 5:58:40
