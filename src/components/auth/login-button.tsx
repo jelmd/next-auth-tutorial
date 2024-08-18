@@ -2,6 +2,8 @@
 
 import { useRouter } from "next/navigation"
 import { ReactNode } from "react"
+import { Dialog, DialogContent, DialogTitle, DialogTrigger } from "../ui/dialog"
+import { LoginForm } from "./login-form"
 
 interface LoginButtonProps {
 	children: ReactNode;
@@ -21,10 +23,20 @@ export function LoginButton({ children, mode = 'redirect', asChild }:
 	}
 
 	if (mode === 'modal') {
-		return <span>TODO: implement modal</span>
+		return (
+			<Dialog>
+				<DialogTrigger asChild={asChild}>
+					{children}
+				</DialogTrigger>
+				<DialogContent>
+					<DialogTitle />
+					<LoginForm />
+				</DialogContent>
+			</Dialog>
+		)
 	}
 
 	return (
-		<span onClick={ onClick }>{ children }</span>
+		<span onClick={onClick} className="cursor-pointer">{children}</span>
 	)
 }

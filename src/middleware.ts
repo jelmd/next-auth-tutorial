@@ -14,6 +14,7 @@ export default auth((req) => {
 
 	if (isApiAuthRoute)
 		return;
+
 	if (isAuthRoute) {
 		if (isLoggedIn)
 			return Response.redirect(new URL(DEFAULT_LOGIN_REDIRECT, nextUrl));
@@ -21,7 +22,14 @@ export default auth((req) => {
 	}
 	if (isLoggedIn || isPublicRoute)
 		return;
-	return Response.redirect(new URL('/auth/login', nextUrl));
+
+	// pass the destination URL as login param so that login can redirect to
+	// it after successful authentication
+	var cbUrl = nextUrl.pathname;
+	if (nextUrl.search)
+		cbUrl += nextUrl.search;
+	cbUrl = encodeURIComponent(cbUrl);
+	return Response.redirect(new URL('/auth/login?callbackUrl=' + cbUrl, nextUrl));
 });
 
 // Optionally, don't invoke Middleware on some paths

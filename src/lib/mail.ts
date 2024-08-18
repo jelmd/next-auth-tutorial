@@ -6,6 +6,7 @@ export async function sendVerifyEmail(email: string, token: string, pwReset = fa
 	const link = pwReset
 		? `http://localhost:3000/auth/new-password?token=${token}`
 		: `http://localhost:3000/auth/new-verify?token=${token}`;
+	console.log(); 
 	return resend.emails.send({
 		from: 'onboarding@resend.dev',
 		to: email,

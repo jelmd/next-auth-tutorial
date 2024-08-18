@@ -12,12 +12,13 @@ import { FormError } from "../form-error"
 import { FormSuccess } from "../form-success";
 import { useState, useTransition } from "react";
 import { reset } from "@/actions/reset";
+import { useParams, usePathname, useRouter } from "next/navigation"
+import { useHtmlContext } from "next/dist/shared/lib/html-context.shared-runtime"
 
 export function ResetForm() {
 	const [error, setErrror] = useState<string|undefined>('');
 	const [success, setSuccess] = useState<string|undefined>('');
 	const [isPending, startTransition] = useTransition();
-
 	const aForm = useForm<z.infer<typeof ResetSchema>>({
 		resolver: zodResolver(ResetSchema),
 		defaultValues: {

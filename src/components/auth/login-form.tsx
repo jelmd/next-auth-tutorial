@@ -25,6 +25,7 @@ export function LoginForm() {
 	const urlError = (err === 'OAuthAccountNotLinkedError')
 	 ? 'Email is used with another provider!'
 	 : (err === null) ? '' : err;
+	const cbUrl = searchParams.get('callbackUrl');
 
 	const aForm = useForm<z.infer<typeof LoginSchema>>({
 		resolver: zodResolver(LoginSchema),
@@ -36,7 +37,7 @@ export function LoginForm() {
 	
 	function onSubmit(values: z.infer<typeof LoginSchema>) {
 		startTransition(async () => {
-			return login(values).then((data) => {
+			return login(values, cbUrl).then((data) => {
 				if (data?.error) {
 					aForm.reset();
 					setErrror(data.error);

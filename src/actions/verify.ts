@@ -7,8 +7,11 @@ import { getUserByEmail } from "@/data/user"
 import { getVerifyTokenByToken } from "@/data/verify-token";
 import { db } from "@/lib/db"
 import { PasswordSchema } from "@/schemas"
+import { Result } from '@/lib/utils'
 
-export async function verify(token: string|null, values?: z.infer<typeof PasswordSchema>) {
+export async function verify(token: string|null,
+	values?: z.infer<typeof PasswordSchema>): Promise<Result>
+{
 	var pwHash = '';
 
 	if (!token)

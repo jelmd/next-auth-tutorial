@@ -1,24 +1,37 @@
-import NextAuth, { DefaultSession } from "next-auth";
+import NextAuth, { DefaultSession, User } from "next-auth";
 import authConfig from "@/auth.config";
 import { PrismaAdapter } from "@auth/prisma-adapter";
 import { db } from "./lib/db";
 import { getUserById } from "./data/user";
 import { UserRole } from "@prisma/client";
 import { getFactorTwoIdByUserId } from "./data/two-factor-map"
+import { getAccountByUserId } from "./data/account"
 
 export type Role = UserRole;
+/* this */
+// export interface ExtendedUser extends User {
+// 	role: Role;
+// 	use2FA: boolean
+// }
+
+/* or that */
+export type ExtendedUser = DefaultSession['user'] & {
+	role: Role;
+	use2FA: boolean;
+	isOAuth: boolean;
+}
 
 declare module "next-auth" {
 	interface Session {
-		user: {
-			role: Role
-		} & DefaultSession['user'];
+		user: ExtendedUser;
 	}
 }
 
 declare module "@auth/core/jwt" {
 	interface JWT extends DefaultJWT {
-		role?: Role
+		role?: Role;
+		use2FA: boolean;
+		isOAuth: boolean;
 	}
 }
 
@@ -54,17 +67,32 @@ export const { handlers: { GET, POST }, auth, signIn, signOut } = NextAuth({
 		async jwt({token, user, account, profile, trigger, session}) {
 			if (token.sub) {
 				const existingUser = await getUserById(token.sub);
-				if (existingUser)
+				if (existingUser) {
+					const existingAccount = await getAccountByUserId(existingUser.id);
+					// also needed to update session values because its values
+					// get used to generate html pages
+					token.isOAuth = !!existingAccount;
 					token.role = existingUser.role;
+					token.use2FA = existingUser.use2FA;
+					token.name = existingUser.name;
+					token.email = existingUser.email;
+					token.picture = existingUser.image;
+				}
 			}
 			console.log({callback: 'jwt', token, user, account, profile, trigger, session});
 			return token;
 		},
 		async session({ session, user, token, newSession, trigger}) {
-			if (token.sub && session.user) {
-				session.user.id = token.sub;
+			if (session.user) {
+				// need to update only the non-default properties here
+				if (token.sub)
+					session.user.id = token.sub;
 				if (token['role'])
 					session.user.role = token.role;
+				session.user.email = token.email as string;
+				session.user.name = token.name;
+				session.user.isOAuth = token.isOAuth;
+				session.user.use2FA = token.use2FA;
 			}
 			console.log({ callback: 'session', session, user, token, newSession, trigger})
 			return session;

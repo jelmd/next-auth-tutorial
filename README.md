@@ -37,6 +37,20 @@ npm i -D --legacy-peer-deps @types/uuid
 # email @gmail for free
 npm install --legacy-peer-deps resend
 npm install --legacy-peer-deps react-spinners
+
+npm install -D --legacy-peer-deps @radix-ui/react-dropdown-menu \
+	npm install -D --legacy-peer-deps @radix-ui/react-avatar
+npx shadcn-ui add dropdown-menu avatar badge
+
+npm install -D --legacy-peer-deps sonner next-themes
+npx shadcn-ui add sonner
+
+npm i --legacy-peer-deps @radix-ui/react-switch @radix-ui/react-select
+npx shadcn-ui add switch select
+
+npm i --legacy-peer-deps @radix-ui/react-dialog
+npx shadcn-ui add dialog
+
 ```
 
 Current status: 5:58:40

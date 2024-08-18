@@ -7,12 +7,15 @@ import { getUserByEmail } from "@/data/user"
 import { db } from "@/lib/db"
 import { sendFactorTwoEmail, sendVerifyEmail } from "@/lib/mail"
 import { genFactorTwoToken, genVerifyToken } from "@/lib/tokens"
+import { Result } from "@/lib/utils"
 import { DEFAULT_LOGIN_REDIRECT } from "@/routes"
 import { LoginSchema } from "@/schemas";
 import { AuthError } from "next-auth";
 import * as z from "zod";
 
-export async function login (values: z.infer<typeof LoginSchema>) {
+export async function login(values: z.infer<typeof LoginSchema>,
+	cbUrl?: string|null): Promise<Result>
+{
 	const validatedFields = LoginSchema.safeParse(values);
 
 	console.log({validatedFields: validatedFields});
@@ -63,7 +66,7 @@ export async function login (values: z.infer<typeof LoginSchema>) {
 			}
 		}
 		const ok = await signIn('credentials', {
-			email, password, redirectTo: DEFAULT_LOGIN_REDIRECT
+			email, password, redirectTo: cbUrl || DEFAULT_LOGIN_REDIRECT
 		});
 		console.log({OK: ok});
 		return ok ? { success: 'ok' } : { error: 'Failed!'};
