@@ -1,6 +1,7 @@
-This code is more or less the code of the auth v5 tutorial on youtube: see
+This code is more or less the code of the next-auth v5 tutorial on youtube: see
 https://www.youtube.com/watch?v=1MTyCvS05V4
 
+Commands used to install required modules:
 ```
 setenv APPNAME auth-guide
 npx create-next-app@rc --typescript --eslint --app --src-dir --turbo --tailwind --no-import-alias --empty ${APPNAME} ${APPNAME}
@@ -52,5 +53,3 @@ npm i --legacy-peer-deps @radix-ui/react-dialog
 npx shadcn-ui add dialog
 
 ```
-
-Current status: 5:58:40
